@@ -34,7 +34,7 @@ pub mod update_log {
     }
 
     pub fn append_log(content: &str) -> Result<(), io::Error> {
-        println!("LOGGING: {}", content);
+        // println!("LOGGING: {}", content);
         let binding: String = get_logs();
         let log_path: &Path = Path::new(binding.as_str());
 
@@ -50,9 +50,6 @@ pub mod update_log {
         let log: File = options.open(latest_log)?;
 
         let mut writer: BufWriter<File> = BufWriter::new(log);
-
-        let current_time: String = get_current_time("%H:%M:%S");
-        println!("Updating log at: {}", &current_time);
 
         let log_content_bytes: Vec<u8> = format!("{} - {}\n", current_time, content).into_bytes();
         let log_content: &[u8] = &log_content_bytes;

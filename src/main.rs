@@ -1,18 +1,18 @@
 use std::{fs::create_dir_all, path::Path};
 
-use crate::get_dirs::get_dirs::{get_base, get_files, get_logs};
+use crate::get_dirs::get_dirs::{get_base, get_files, get_logs, get_root};
+use crate::multithreading::run_threads;
 use crate::update_log::update_log::{append_log, create_log};
 
 mod get_dirs;
 mod helpers;
+mod multithreading;
 mod update_log;
 mod watch_file;
 mod watch_folder;
 
 fn main() {
-    use watch_file::start_file_watch;
-    // use watch_folder::start_folder_watch;
-
+    let mut files_to_watch: Vec<String> = Vec::new();
     println!("Starting Hyperlink.");
 
     let logs_binding: String = get_logs();
@@ -37,7 +37,15 @@ fn main() {
     _ = create_log();
     _ = append_log("Root folders created successfully. \n");
 
-    let vs_keybindings: String = format!("{}/test.txt", get_base());
+    // files_to_watch.push(format!("{}/other_config.txt", get_base()));
+    // files_to_watch.push(format!("{}/test.txt", get_base()));
 
-    _ = start_file_watch(vs_keybindings);
+    // VSCode Keybindings
+    files_to_watch.push(format!(
+        "{}/AppData/Roaming/Code/User/keybindings.json",
+        get_root()
+    ));
+
+    run_threads(files_to_watch);
+    // Run threads for folders - use watch_folder::start_folder_watch;
 }
