@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 notify = "5"
 chrono = "0.4.26"
+tokio = { version = "1", features = ["full"] }

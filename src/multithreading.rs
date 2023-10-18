@@ -1,3 +1,5 @@
+use std::{sync::mpsc::Sender, thread::JoinHandle};
+
 use crate::{update_log::update_log::append_log, watch_file::watch_file};
 
 pub fn run_threads(files_to_watch: Vec<String>) {
@@ -8,10 +10,10 @@ pub fn run_threads(files_to_watch: Vec<String>) {
     let mut threads: Vec<thread::JoinHandle<()>> = vec![];
 
     for path in files_to_watch {
-        let tx = tx.clone();
-        let path = path.clone();
+        let tx: Sender<String> = tx.clone();
+        let path: String = path.clone();
 
-        let thread = thread::spawn(move || {
+        let thread: JoinHandle<()> = thread::spawn(move || {
             _ = watch_file(path, tx);
         });
 

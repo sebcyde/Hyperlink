@@ -2,11 +2,13 @@ use std::{fs::create_dir_all, path::Path};
 
 use crate::get_dirs::get_dirs::{get_base, get_files, get_logs, get_root};
 use crate::multithreading::run_threads;
+use crate::schedule::schedule::checkpoint;
 use crate::update_log::update_log::{append_log, create_log};
 
 mod get_dirs;
 mod helpers;
 mod multithreading;
+mod schedule;
 mod update_log;
 mod watch_file;
 mod watch_folder;
@@ -37,8 +39,7 @@ fn main() {
     _ = create_log();
     _ = append_log("Root folders created successfully. \n");
 
-    // files_to_watch.push(format!("{}/other_config.txt", get_base()));
-    // files_to_watch.push(format!("{}/test.txt", get_base()));
+    // Add file paths HERE
 
     // VSCode Keybindings
     files_to_watch.push(format!(
@@ -48,4 +49,7 @@ fn main() {
 
     run_threads(files_to_watch);
     // Run threads for folders - use watch_folder::start_folder_watch;
+
+    // EOD zip and ship files
+    checkpoint()
 }
