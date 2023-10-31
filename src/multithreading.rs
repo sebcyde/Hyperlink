@@ -2,6 +2,7 @@ use std::{sync::mpsc::Sender, thread::JoinHandle};
 
 use crate::{update_log::update_log::append_log, watch_file::watch_file};
 
+// Set up threads and watchers for each of the specified files
 pub fn run_threads(files_to_watch: Vec<String>) {
     use std::sync::mpsc;
     use std::thread;
